@@ -4,8 +4,8 @@ const Discord = require('discord.js')
 // Fichier contenant des fonctions pouvant être utiles
 const tools = require('./functions.js');
 
-//Préfixe
-const prefix = '&';
+const config = require("./config.json");
+
 
 // Récupération d'une instance de client Discord
 // (Le bot en lui même)
@@ -28,17 +28,16 @@ client.on('message', message => {
 	let sender = message.author;	// Sinon on récupère l'auteur
 	
 	// Variables pour faciliter le travail après
-	let msg = message.content.toLowerCase();	// On passe le tout en minuscule pour avoir un truc qui ignore la case
-	if(!msg.startsWith(prefix)){return}			// Si ça ne commence pas par notre préfixe, on peut déjà arrêter le traitement
+	let msg = message.content;					// On passe le tout en minuscule pour avoir un truc qui ignore la case
+	if(!msg.startsWith(config.prefix)){return}	// Si ça ne commence pas par notre préfixe, on peut déjà arrêter le traitement
 	
 	//Test de command handler
 	
-	// Récupération des arguments, on enlève d'abord le prefix et on 
-	// convertie le tout en tableau. 
-	let arguments = msg.slice(prefix.length).trim().split(/ +/);
-	let cmd = arguments[0];
+	// Récupération des arguments et de la commande 
+	let arguments = msg.slice(config.prefix.length).trim().split(/ +/g);
+	let cmd = arguments.shift().toLowerCase();
 	
-	//Exécution de la commande
+	//Exécution de la commande avec le handler
 	try{
 		let fichier_commande = require(`./commands/${cmd}.js`); // Test d'ouverture de fichier.
 		fichier_commande.run(client,message,arguments,tools);
@@ -46,7 +45,6 @@ client.on('message', message => {
 		console.log(ex.message);
 	}finally{
 		console.log(`${sender.tag} a exécuté la commande ${arguments}`);
-		//message.channel.send("Le handler de commandes  ***F O N C T I O N N E***");
 	}
 	
 	
@@ -57,13 +55,11 @@ client.on('message', message => {
 		message.channel.send('Message bien reçu !\n Le test est réussi '+sender+' !')
 	}*/
 	
-	if(msg === prefix+'INFO'){
+	if(msg === config.prefix+'INFO'){
 		console.log('['+sender+'] executed info command');
 		message.channel.send('J\'ai été créé par Inposa !\nJe sert surtout à faire des trucs sur Discord !');
 	}
-	
 });
 
-
 // Loger le bot avec son token d'autentification qui lui est propre
-client.login('NTc1Nzk2MjAzMzE3MzYyNzE5.XNiHmg.Ds2DoMA1mgAbr1MeyU_qC409nH0')
+client.login(config.token);

@@ -1,18 +1,15 @@
 exports.run = (client, message, args, tools)=>{
-	if(args[1]==undefined){
+	if(args[0]==undefined){
 		message.channel.send(`Bonjour ${message.author} !`);
 	}
 	else{
 		try{
-			let memberId = tools.idByPoke(args[1]);
-			console.log(memberId);
-			
-			let usr = message.guild.fetchMember(memberId);
-			console.log(usr);
+			let usr = message.mentions.users.first();
 			
 			message.channel.send(`Bonjour ${usr} !`);
 		}
-		catch{
+		catch(ex){
+			console.log(ex);
 			message.channel.send("Merci de bien vouloir spécifier quelque chose qui ai du **SENS** pour moi !");
 		}
 	}
