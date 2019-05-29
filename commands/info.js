@@ -1,14 +1,3 @@
 exports.run = (client, message, args, tools)=>{
-	if(args[1]==undefined){
-		message.channel.send(message.author.displayAvatarURL);
-	}
-	else{
-		try{
-			let usr = message.mentions.users.first();
-			message.channel.send(usr.displayAvatarURL);
-		}
-		catch(ex){
-			message.channel.send("Merci de bien vouloir spécifier quelque chose qui ai du **SENS** pour moi !");
-		}
-	}
+	message.channel.send("Je suis un bot créé par Inposa pour pouvoir tester des trucs !\nJe sert surtout à faire des trucs sur Discord !");
 }

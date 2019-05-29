@@ -5,7 +5,7 @@ exports.run = (client, message, args, tools)=>{
 	else{
 		try{
 			let usr = message.mentions.users.first();
-			
+
 			message.channel.send(`Bonjour ${usr} !`);
 		}
 		catch(ex){
