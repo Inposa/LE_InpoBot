@@ -4,13 +4,11 @@
   "description": "Un bot pour Inposa ! Un bot qui fait des trucs !",
   "main": "app.js",
   "engines": {
-	"node": "10.15.3",
+    "node": "10.15.3",
     "npm": "6.4.1"
   },
   "dependencies": {
-    "canvas": "^2.5.0",
-    "discord.js": "^11.5.0",
-    "windows-build-tools": "^5.1.0"
+    "discord.js": "^11.5.1"
   },
   "devDependencies": {},
   "scripts": {
