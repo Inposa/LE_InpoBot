@@ -9,11 +9,11 @@ const config = require("./config.json");
 // Création d'une instance de client Discord
 const client = new Discord.Client();
 
-//Tentative de loading des commandes
+/* //Tentative de loading des commandes
 function reloadCommands(){
 	let files = fs.readdirSync('./commands');
 
-}
+}*/
 
 
 
@@ -24,9 +24,10 @@ client.on('ready',() =>{
 	console.log('-- LE BOT EST PRÊT À FONCTIONNER --');
 });
 
+/*
 client.on('guildCreate',() =>{
 
-});
+});*/
 
 
 // Listener lorsqu'un message est envoyé dans le chat
@@ -55,9 +56,5 @@ client.on('message', message => {
 	}
 });
 
-try {
-	// Loger le bot avec son token d'autentification qui lui est propre
-	client.login(process.env.BOT_TOKEN);
-} catch (e) {
-	console.log("Impossible de lancer le bot, une erreur est survenue :\n"+e);
-}
+// Loger le bot avec son token d'autentification qui lui est propre
+client.login(process.env.BOT_TOKEN);
