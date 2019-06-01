@@ -12,7 +12,7 @@ const client = new Discord.Client();
 //Tentative de loading des commandes
 function reloadCommands(){
 	let files = fs.readdirSync('./commands');
-	
+
 }
 
 
@@ -57,7 +57,7 @@ client.on('message', message => {
 
 try {
 	// Loger le bot avec son token d'autentification qui lui est propre
-	client.login(config.token);
+	client.login(process.env.BOT_TOKEN);
 } catch (e) {
 	console.log("Impossible de lancer le bot, une erreur est survenue :\n"+e);
 }
