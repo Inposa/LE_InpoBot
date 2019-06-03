@@ -24,6 +24,16 @@ client.on('ready',() =>{
 	console.log('-- LE BOT EST PRÊT À FONCTIONNER --');
 });
 
+client.on('guildMemberAdd',(member)=>{
+	const guild = member.guild;
+	const usr = member.user;
+
+	const channel = guild.channels.find(ch => ch.name === 'bienvenue');
+
+	channel.send(`Hello there ${user} !`);
+
+});
+
 /*
 client.on('guildCreate',() =>{
 
