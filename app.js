@@ -30,7 +30,7 @@ client.on('guildMemberAdd',(member)=>{
 
 	const channel = guild.channels.find(ch => ch.name === 'bienvenue');
 
-	channel.send(`Hello there ${user} !`);
+	channel.send(`Hello there ${usr} !`);
 
 });
 
