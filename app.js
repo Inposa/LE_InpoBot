@@ -28,8 +28,8 @@ client.on('guildMemberAdd', (member)=>{
 	const usr = member.user;
 
 	const channel = guild.channels.find(ch => ch.name === 'bienvenue');
-
 	channel.send(`Hello there ${usr} !`);
+	member.addRole('585102354479579136');
 
 });
 
