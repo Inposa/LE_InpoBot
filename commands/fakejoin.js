@@ -1,3 +1,4 @@
-exports.run = (client, message, args, tools)=>{
-  client.emit('guildMemberAdd', message.member || await message.guild.fetchMember(message.author));
-}
+exports.run = (client, message)=>{
+	message.channel.send('Et hop ! Signal émit !');
+	client.emit('guildMemberAdd', message.member || message.guild.fetchMember(message.author));
+};

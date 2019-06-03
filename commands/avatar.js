@@ -1,20 +1,20 @@
-exports.run = (client, message, args, tools)=>{
-	if(args[0]==undefined){
+exports.run = (client, message, args)=>{
+	if(args[0] == undefined) {
 		message.channel.send(message.author.displayAvatarURL);
 	}
 	else{
 		try{
-			for(let usr of message.mentions.users) {
+			for(const usr of message.mentions.users) {
 				message.channel.send(usr.last.displayAvatarURL);
 
 			}
 
-			//let usr = message.mentions.users.first();
+			// let usr = message.mentions.users.first();
 
 		}
-		catch(ex){
+		catch(ex) {
 			console.log(ex);
-			message.channel.send("Merci de bien vouloir spécifier quelque chose qui ai du **SENS** pour moi !");
+			message.channel.send('Merci de bien vouloir spécifier quelque chose qui ai du **SENS** pour moi !');
 		}
 	}
-}
+};

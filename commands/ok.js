@@ -1,20 +1,18 @@
-exports.run = (client, message, args, tools)=>{
+exports.run = (client, message)=>{
 	try{
-		let fs = require('fs');
-		
-		let path = './pics/ok/';
-		let files = fs.readdirSync(path);
-		
-		let pic = files[Math.floor(Math.random()*files.length)];
+		const fs = require('fs');
 
-		message.channel.send("",{file: path+pic});
+		const path = './pics/ok/';
+		const files = fs.readdirSync(path);
+
+		const pic = files[Math.floor(Math.random() * files.length)];
+
+		message.channel.send('', { file: path + pic });
 	}
-	catch(ex){
+	catch(ex) {
 		console.log(ex);
-		message.channel.send("Hopla boom, erreur :");
+		message.channel.send('Hopla boom, erreur :');
 		message.channel.send(`**${ex}**`);
 		return;
 	}
-
-	
-}
+};
