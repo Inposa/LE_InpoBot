@@ -66,15 +66,15 @@ client.on('message', message => {
 
 		const now = new Date();
 		const annee = now.getFullYear();
-		const mois = ('0' + now.getMonth() + 1).slice(-2);
+		const mois = (parseInt('0' + now.getMonth()) + 1).slice(-2);
 		const jour = ('0' + now.getDate()).slice(-2);
 		const hr = ('0' + now.getHours()).slice(-2);
 		const min = ('0' + now.getMinutes()).slice(-2);
 		const sec = ('0' + now.getSeconds()).slice(-2);
 
-		const strDate = `[${annee}/${mois}/${jour} | ${hr}:${min}:${sec}]`;
+		const strDate = `[${annee}/${mois}/${jour}|${hr}:${min}:${sec}]`;
 
-		console.log(`${strDate} ${sender.tag} a exécuté la commande ${cmd + ' ' + args}`);
+		console.log(`${strDate}${sender.tag} a exécuté la commande ${cmd} ${args}`);
 	}
 });
 
