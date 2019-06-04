@@ -12,8 +12,6 @@ exports.run = (client, message)=>{
 		res.on('end', function() {
 			const response = JSON.parse(body);
 
-			// const attachment = new Discord.MessageAttachment(response.file);
-			// let attach = new Discord.Attachment(response.file,"chat.png");
 			message.channel.send(`${message.author} Voici un petit chat ! `, { file: response.file });
 
 		});

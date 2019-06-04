@@ -2,12 +2,12 @@ const Discord = require('discord.js');
 exports.run = (client, message, args)=>{
 	const path = './pics/roll/';
 
-	// À la place de voir si le premier argument est undefined, on regarde si converti en int ça donne quelque chose
+	/* // À la place de voir si le premier argument est undefined, on regarde si converti en int ça donne quelque chose
 	// Ca permettra après de voir ce qu'on va pouvoir faire avec par la suite.
-	const nbr = parseInt(args[0], 10);
+	const nbr = parseInt(args[0], 10); */
 
 	// Si aucun argument n'a été précisé ou que l'utilisteur a rentré n'importe quoi, on réalise un simple roll 20
-	if(nbr.isNaN()) {
+	if(args[0] == undefined) {
 		const ans = Math.floor(Math.random() * 2) + 1;
 
 		const dice = 'd20_big.png';
