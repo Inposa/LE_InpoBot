@@ -2,10 +2,10 @@
 const Discord = require('discord.js');
 const Canvas = require('canvas'); */
 
-exports.run = (client, message)=>{
-	// Récupération de l'image donnée en argument par l'utilisateur.
-	// S'il en a pas donné, on récupère plutôt son image de profil.
-	/* if(args[0] == undefined) {
+// exports.run = (client, message)=>{
+// Récupération de l'image donnée en argument par l'utilisateur.
+// S'il en a pas donné, on récupère plutôt son image de profil.
+/* if(args[0] == undefined) {
 		const pic = message.author.displayAvatarURL;
 	}
 	if(message.mentions.first() != undefined) {
@@ -33,4 +33,4 @@ exports.run = (client, message)=>{
 		console.log(ex);
 		message.channel.send("Merci de bien vouloir spécifier quelque chose qui ai du **SENS** pour moi !");
 	}*/
-};
+// };

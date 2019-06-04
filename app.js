@@ -27,30 +27,27 @@ client.on('guildMemberAdd', (member)=>{
 	const guild = member.guild;
 	const usr = member.user;
 
-	const channel = guild.channels.find(ch => ch.name === 'bienvenue');
-	channel.send(`Hello there ${usr} !`);
-	member.addRole('585102354479579136');
-
+	try {
+		const channel = guild.channels.find(ch => ch.name === config.join_channel);
+		channel.send(`Hello there ${usr} !`);
+		member.addRole('585102354479579136');
+	}
+	catch (e) {
+		console.error(`Le channel ${config.join_channel} ne semble pas exister...`);
+	}
 });
-
-/*
-client.on('guildCreate',() =>{
-
-});*/
-
 
 // Listener lorsqu'un message est envoyé dans le chat
 // message est le message en lui même qu'on récupère en même temps qu'on l'écoute
 client.on('message', message => {
-	// On passe le tout en minuscule pour avoir un truc qui ignore la case
 	const msg = message.content;
-	// Si ça ne commence pas par notre préfixe, on peut déjà arrêter le traitement
+	// Si le message ne commence pas par config.prefix, on peut déjà arrêter le traitement
+	// de même si le message provient d'un bot
 	if(!msg.startsWith(config.prefix) || message.author.bot) {return;}
 
-	// Sinon on en récupère l'auteur
+	message.channel.startTyping();
 	const sender = message.author;
 
-	// Command handler
 	// Récupération des arguments et de la commande
 	const args = msg.slice(config.prefix.length).trim().split(/ +/g);
 	const cmd = args.shift().toLowerCase();
@@ -62,10 +59,22 @@ client.on('message', message => {
 		fichier_commande.run(client, message, args);
 	}
 	catch(ex) {
-		console.log(ex.message);
+		console.error(ex.message);
 	}
 	finally {
-		console.log(`${sender.tag} a exécuté la commande ${cmd + ' ' + args}`);
+		message.channel.stopTyping();
+
+		const now = new Date();
+		const annee = now.getFullYear();
+		const mois = ('0' + now.getMonth() + 1).slice(-2);
+		const jour = ('0' + now.getDate()).slice(-2);
+		const hr = ('0' + now.getHours()).slice(-2);
+		const min = ('0' + now.getMinutes()).slice(-2);
+		const sec = ('0' + now.getSeconds()).slice(-2);
+
+		const strDate = `[${annee}/${mois}/${jour} | ${hr}:${min}:${sec}]`;
+
+		console.log(`${strDate} ${sender.tag} a exécuté la commande ${cmd + ' ' + args}`);
 	}
 });
 
