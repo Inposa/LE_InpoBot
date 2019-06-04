@@ -66,7 +66,7 @@ client.on('message', message => {
 
 		const now = new Date();
 		const annee = now.getFullYear();
-		const mois = ('0' + (now.getMonth() + 1).slice(-2));
+		const mois = (('0' + (now.getMonth() + 1)).slice(-2));
 		const jour = ('0' + now.getDate()).slice(-2);
 		const hr = ('0' + now.getHours()).slice(-2);
 		const min = ('0' + now.getMinutes()).slice(-2);
