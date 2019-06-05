@@ -1,4 +1,4 @@
-/* const https = require('https');
+const https = require('https');
 exports.run = (client, message)=>{
 	const url = 'https://aws.random.cat/meow';
 
@@ -12,19 +12,10 @@ exports.run = (client, message)=>{
 		res.on('end', function() {
 			const response = JSON.parse(body);
 
-
+			message.channel.send(`${message.author} Voici un petit chat ! `, { file: response.file });
 
 		});
 	}).on('error', function(e) {
 		console.log('Une erreur : ', e);
-	});
-};*/
-
-const request = require('request');
-
-exports.run = (client, message)=>{
-	const url = 'https://aws.random.cat/meow';
-	request(url, { json: true }, function(error, response, body) {
-		message.channel.send(`${message.author} Voici un petit chat ! `, { file: body.file });
 	});
 };
