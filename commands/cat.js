@@ -1,30 +1,8 @@
-/* const https = require('https');
-exports.run = (client, message)=>{
-	const url = 'https://aws.random.cat/meow';
-
-	https.get(url, function(res) {
-		let body = '';
-
-		res.on('data', function(chunk) {
-			body += chunk;
-		});
-
-		res.on('end', function() {
-			const response = JSON.parse(body);
-
-
-
-		});
-	}).on('error', function(e) {
-		console.log('Une erreur : ', e);
-	});
-};*/
-
 const request = require('request');
 
-exports.run = (client, message)=>{
+exports.run = async (client, message)=>{
 	const url = 'https://aws.random.cat/meow';
-	request(url, { json: true }, function(error, response, body) {
+	request(url, { json: true }, await function(error, response, body) {
 		message.channel.send(`${message.author} Voici un petit chat ! `, { file: body.file });
 	});
 };
