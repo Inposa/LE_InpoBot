@@ -24,10 +24,11 @@ const request = require('request');
 
 exports.run = (client, message)=>{
 	const url = 'https://aws.random.cat/meow';
-	request(url, function(error, response, body) {
+	request(url, { json: true }, function(error, response, body) {
 		message.channel.send('Ceci est un test de recherche de chat avec le module request !');
 		message.channel.send(`Erreur: ${error}`);
 		message.channel.send(`Réponse: ${response}`);
 		message.channel.send(`Body: ${body}`);
+		message.channel.send(`Lien: ${body.file}`);
 	});
 };
