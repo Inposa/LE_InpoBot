@@ -42,7 +42,7 @@ client.on('message', message => {
 
 	if(!msg.startsWith(config.prefix) && config.quoifeur == 'true') {
 		const commande = require('./commands/reponse_auto.js');
-		commande.run(client, message);
+		commande.run(client, msg);
 	}
 	else{
 
