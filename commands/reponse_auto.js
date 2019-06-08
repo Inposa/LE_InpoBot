@@ -6,7 +6,7 @@ exports.run = (client, message)=>{
 	// Mettre le regex dans le fichier config
 	const verif = message.content.replace(regex, '').trim().toLowerCase();
 
-	message.channel.send(`TEST: \n ${verif}\n----------------`);
+	// message.channel.send(`TEST: \n ${verif}\n----------------`);
 
 	// Procédure à faire --> utiliser une enmap contenant chaque mot clé à détecter,
 	// chaque entrée accompagnée de sa réponse perso (peut-être qu'il faudra la
