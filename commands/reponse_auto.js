@@ -2,6 +2,8 @@ const config = require('../config.json');
 
 exports.run = (client, message)=>{
 
+	message.channel.send(config.regex);
+	console.log(config.regex);
 	// Mettre le regex dans le fichier config
 	const verif = message.content.replace(config.regex, '').trim().toLowerCase();
 
