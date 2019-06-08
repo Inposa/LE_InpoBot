@@ -38,8 +38,8 @@ client.on('guildMemberAdd', (member)=>{
 // Listener lorsqu'un message est envoyé dans le chat
 // message est le message en lui même qu'on récupère en même temps qu'on l'écoute
 client.on('message', message => {
+	if (message.author.bot) {return;}
 	const msg = message.content;
-
 	if(!msg.startsWith(config.prefix) && config.quoifeur == 'true') {
 		try {
 			const commande = require('./commands/reponse_auto.js');
@@ -51,10 +51,6 @@ client.on('message', message => {
 
 	}
 	else{
-
-		// Si le message ne commence pas par config.prefix, on peut déjà arrêter le traitement
-		// de même si le message provient d'un bot
-		if(!msg.startsWith(config.prefix) || message.author.bot) {return;}
 
 		message.channel.startTyping();
 		const sender = message.author;
