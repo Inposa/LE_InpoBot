@@ -1,4 +1,7 @@
 {
 	"prefix":"&",
-	"join_channel":"bienvenue"
+	"join_channel":"bienvenue",
+
+	"quoifeur":"true",
+	"regex":""
 }
