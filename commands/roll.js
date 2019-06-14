@@ -27,6 +27,7 @@ exports.run = (client, message, args)=>{
 		}
 		if (nb > 1000000) {
 			message.channel.send('Ah ah.. **Es-tu sûr d\'avoir besoin de tirer sur un dé aussi grand ?**');
+			return;
 		}
 
 		try{
