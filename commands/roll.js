@@ -19,24 +19,28 @@ exports.run = (client, message, args)=>{
 		message.channel.send(leEmbed);
 	}
 	else{
+		const nb = args[0].floor();
 		// On vérifie que le nombre entré n'est pas totalement pas possible à faire
-		if(args[0] <= 0) {
+		if(nb < 2) {
 			message.channel.send('Merci de bien vouloir spécifier une valeur qui ai du **SENS** pour moi !');
 			return;
+		}
+		if (nb > 1000000) {
+			message.channel.send('Ah ah.. **Es-tu sûr d\'avoir besoin de tirer sur un dé aussi grand ?**');
 		}
 
 		try{
 			const fs = require('fs');
-			const ans = Math.floor(Math.random() * args[0]) + 1;
+			const ans = Math.floor(Math.random() * nb) + 1;
 
 			// Si le fichier de dé n'existe pas, on utilise l'image de D6 à la place
-			let dice = `d${args[0]}_big.png`;
+			let dice = `d${nb}_big.png`;
 			if(!fs.existsSync(path + dice)) {
 				dice = 'd6_big.png';
 			}
 
 			const leEmbed = new Discord.RichEmbed()
-				.setTitle(`**${message.author.tag} a tiré un ${ans} sur son dé à ${args[0]} faces.**`)
+				.setTitle(`**${message.author.tag} a tiré un ${ans} sur son dé à ${nb} faces.**`)
 				.attachFiles([path + dice])
 				.setThumbnail(`attachment://${dice}`);
 
