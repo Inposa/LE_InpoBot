@@ -19,7 +19,7 @@ exports.run = (client, message, args)=>{
 		message.channel.send(leEmbed);
 	}
 	else{
-		const nb = args[0].floor();
+		const nb = Math.floor(args[0]);
 		// On vérifie que le nombre entré n'est pas totalement pas possible à faire
 		if(nb < 2) {
 			message.channel.send('Merci de bien vouloir spécifier une valeur qui ai du **SENS** pour moi !');
