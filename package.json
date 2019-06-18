@@ -8,8 +8,9 @@
     "npm": "6.4.1"
   },
   "dependencies": {
+    "better-sqlite-pool": "^0.2.2",
     "discord.js": "^11.5.1",
-    "emap": "0.0.12",
+    "enmap": "^5.0.0",
     "request": "^2.88.0"
   },
   "devDependencies": {},

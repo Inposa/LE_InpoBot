@@ -1,11 +1,28 @@
 // Importation de la librairie de Discord.js
 const Discord = require('discord.js');
+const Enmap = require('enmap');
 // const fs = require('fs');
 
 const config = require('./config.json');
 
 // Création d'une instance de client Discord
 const client = new Discord.Client();
+
+client.settings = new Enmap({
+	name:'settings',
+	fetchAll: false,
+	autoFetch: true,
+	cloneLevel: 'deep',
+});
+
+const defaultSettings = {
+	prefix: '&',
+	// modLogChannel: 'mod-log',
+	// modRole: 'Moderator',
+	// adminRole: 'Administrator',
+	// welcomeChannel: 'welcome',
+	welcomeMessage: 'Booooooonjour !',
+};
 
 /* //Tentative de loading des commandes
 function reloadCommands(){
@@ -23,6 +40,14 @@ client.on('ready', () =>{
 
 client.on('guildMemberAdd', (member)=>{
 	const guild = member.guild;
+
+	client.settings.ensure(member.guild.id, defaultSettings);
+
+	const messageBienvenue = client.settings.get(member.guild.id, 'welcomeMessage');
+	const channel = guild.channels.find(ch => ch.name === config.join_channel);
+
+	channel.send(messageBienvenue);
+/*
 	const usr = member.user;
 
 	try {
@@ -32,7 +57,7 @@ client.on('guildMemberAdd', (member)=>{
 	}
 	catch (e) {
 		console.error(`Le channel ${config.join_channel} ne semble pas exister...`);
-	}
+	}*/
 });
 
 // Listener lorsqu'un message est envoyé dans le chat
