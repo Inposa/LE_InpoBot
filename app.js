@@ -34,7 +34,7 @@ function reloadCommands(){
 // Listener lorsque le bot est prêt à être utilisé
 // Lorsqu'il est lancé, par exemple
 client.on('ready', () =>{
-	client.user.setActivity('Tester des trucs', { type:'PLAYING' });
+	client.user.setActivity(config.activity, { type:'PLAYING' });
 	console.log('-- LE BOT EST PRÊT À FONCTIONNER --');
 });
 
