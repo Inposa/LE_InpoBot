@@ -63,9 +63,10 @@ client.on('guildMemberAdd', (member)=>{
 // Listener lorsqu'un message est envoyé dans le chat
 // message est le message en lui même qu'on récupère en même temps qu'on l'écoute
 client.on('message', message => {
+	const guildConf = client.settings.ensure(message.guild.id, defaultSettings);
 	if (message.author.bot) {return;}
 	const msg = message.content;
-	if(!msg.startsWith(config.prefix) && config.quoifeur == 'true') {
+	if(!msg.startsWith(guildConf.prefix) && config.quoifeur == 'true') {
 		try {
 			const commande = require('./commands/reponse_auto.js');
 			commande.run(client, message);
@@ -96,7 +97,7 @@ client.on('message', message => {
 		finally {
 			message.channel.stopTyping();
 
-			const now = new Date();
+			/* const now = new Date();
 			const annee = now.getFullYear();
 			const mois = (('0' + (now.getMonth() + 1)).slice(-2));
 			const jour = ('0' + now.getDate()).slice(-2);
@@ -104,9 +105,9 @@ client.on('message', message => {
 			const min = ('0' + now.getMinutes()).slice(-2);
 			const sec = ('0' + now.getSeconds()).slice(-2);
 
-			const strDate = `[${annee}/${mois}/${jour}|${hr}:${min}:${sec}]`;
+			const strDate = `[${annee}/${mois}/${jour}|${hr}:${min}:${sec}]`; */
 
-			console.log(`${strDate}${sender.tag} a exécuté la commande ${cmd} ${args}`);
+			console.log(`${sender.tag} a exécuté la commande ${cmd} ${args}`);
 		}
 	}
 });
