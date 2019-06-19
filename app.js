@@ -60,13 +60,20 @@ client.on('guildMemberAdd', (member)=>{
 	}*/
 });
 
+
 // Listener lorsqu'un message est envoyé dans le chat
 // message est le message en lui même qu'on récupère en même temps qu'on l'écoute
-client.on('message', message => {
+client.on('message', async (message) => {
+	if (!message.guild || message.author.bot) {return;}
+
 	const guildConf = client.settings.ensure(message.guild.id, defaultSettings);
-	if (message.author.bot) {return;}
 	const msg = message.content;
-	if(!msg.startsWith(guildConf.prefix) && config.quoifeur == 'true') {
+
+	if(msg.indexOg(guildConf.prefix) !== 0) {
+		return;
+	}
+
+	/* if(!msg.startsWith(guildConf.prefix) && config.quoifeur == 'true') {
 		try {
 			const commande = require('./commands/reponse_auto.js');
 			commande.run(client, message);
@@ -75,14 +82,14 @@ client.on('message', message => {
 			console.error(e);
 		}
 
-	}
+	}*/
+
 	else{
 
 		message.channel.startTyping();
-		const sender = message.author;
 
 		// Récupération des arguments et de la commande
-		const args = msg.slice(config.prefix.length).trim().split(/ +/g);
+		const args = msg.slice(config.prefix.length).trim().split(/\s+/g);
 		const cmd = args.shift().toLowerCase();
 
 		// Exécution de la commande avec le handler
@@ -107,7 +114,7 @@ client.on('message', message => {
 
 			const strDate = `[${annee}/${mois}/${jour}|${hr}:${min}:${sec}]`; */
 
-			console.log(`${sender.tag} a exécuté la commande ${cmd} ${args}`);
+			console.log(`${message.author.tag} a exécuté la commande ${cmd} ${args}`);
 		}
 	}
 });
