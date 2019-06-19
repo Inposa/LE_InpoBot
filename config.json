@@ -1,0 +1,10 @@
+{
+	"prefix":"&",
+	"join_channel":"bienvenue",
+	
+	"activity":"En cours de test, ne pas utiliser",
+	
+	"quoifeur":"true",
+	"regex":"(\\?|!|,|\\.|:|§|;|`|\"|'|%|\\]|\\)|\\||\\(|~|=|\\+|\\-|_|\\})+$"
+	
+}

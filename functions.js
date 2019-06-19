@@ -2,7 +2,8 @@ module.exports = {
 	ping: function(){
 		return 'Test !';
 	},
-	
+
+/*
 	//Retourne l'id d'un membre de guilde à partir de son ping
 	// (qui est sous la forme <@113349616887463936>)
 	// Renvoie l'id dans les <> et le @
@@ -12,4 +13,5 @@ module.exports = {
 			return nouvNom;
 		}
 	}
+	*/
 }

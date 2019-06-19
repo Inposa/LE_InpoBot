@@ -1,65 +1,125 @@
 // Importation de la librairie de Discord.js
-const Discord = require('discord.js')
+const Discord = require('discord.js');
+const Enmap = require('enmap');
+// const fs = require('fs');
 
-// Fichier contenant des fonctions pouvant être utiles
-const tools = require('./functions.js');
+const config = require('./config.json');
 
-const config = require("./config.json");
-
-
-// Récupération d'une instance de client Discord
-// (Le bot en lui même)
+// Création d'une instance de client Discord
 const client = new Discord.Client();
 
+client.settings = new Enmap({
+	name:'settings',
+	fetchAll: false,
+	autoFetch: true,
+	cloneLevel: 'deep',
+});
 
-// Listener lorsque le bot est prêt à être utilisé 
+const defaultSettings = {
+	prefix: '&',
+	// modLogChannel: 'mod-log',
+	// modRole: 'Moderator',
+	// adminRole: 'Administrator',
+	welcomeChannel: 'bienvenue',
+	welcomeMessage: 'Booooooonjour {{user}} !',
+};
+
+/* //Tentative de loading des commandes
+function reloadCommands(){
+	let files = fs.readdirSync('./commands');
+
+}*/
+
+
+// Listener lorsque le bot est prêt à être utilisé
 // Lorsqu'il est lancé, par exemple
-client.on('ready',() =>{
-	console.log('LANCEMENT DU BOT');
-	client.user.setActivity("Tester des trucs",{type:'PLAYING'});
-	
+client.on('ready', () =>{
+	client.user.setActivity(config.activity, { type:'PLAYING' });
+	console.log('-- LE BOT EST PRÊT À FONCTIONNER --');
+});
+
+client.on('guildMemberAdd', (member)=>{
+	const guild = member.guild;
+
+	client.settings.ensure(member.guild.id, defaultSettings);
+
+	let messageBienvenue = client.settings.get(member.guild.id, 'welcomeMessage');
+	const channel = guild.channels.find(ch => ch.name === client.settings.get(member.guild.id, 'welcomeChannel'));
+
+	messageBienvenue = messageBienvenue.replace('{{user}}', member.displayName);
+	messageBienvenue = messageBienvenue.replace('{{guild}}', member.guild.name);
+	channel.send(messageBienvenue);
+/*
+	const usr = member.user;
+
+	try {
+		const channel = guild.channels.find(ch => ch.name === config.join_channel);
+		channel.send(`Hello there ${usr} !`);
+		member.addRole('585102354479579136');
+	}
+	catch (e) {
+		console.error(`Le channel ${config.join_channel} ne semble pas exister...`);
+	}*/
 });
 
 
 // Listener lorsqu'un message est envoyé dans le chat
 // message est le message en lui même qu'on récupère en même temps qu'on l'écoute
-client.on('message', message => {
-	if(message.author.bot){return}	// Si l'auteur du message est un bot, on arrête le traitement
-	let sender = message.author;	// Sinon on récupère l'auteur
-	
-	// Variables pour faciliter le travail après
-	let msg = message.content;					// On passe le tout en minuscule pour avoir un truc qui ignore la case
-	if(!msg.startsWith(config.prefix)){return}	// Si ça ne commence pas par notre préfixe, on peut déjà arrêter le traitement
-	
-	//Test de command handler
-	
-	// Récupération des arguments et de la commande 
-	let arguments = msg.slice(config.prefix.length).trim().split(/ +/g);
-	let cmd = arguments.shift().toLowerCase();
-	
-	//Exécution de la commande avec le handler
-	try{
-		let fichier_commande = require(`./commands/${cmd}.js`); // Test d'ouverture de fichier.
-		fichier_commande.run(client,message,arguments,tools);
-	}catch(ex){
-		console.log(ex.message);
-	}finally{
-		console.log(`${sender.tag} a exécuté la commande ${arguments}`);
+client.on('message', async (message) => {
+	if (!message.guild || message.author.bot) {return;}
+
+	const guildConf = client.settings.ensure(message.guild.id, defaultSettings);
+	const msg = message.content;
+
+	if(msg.indexOf(guildConf.prefix) !== 0) {
+		return;
 	}
-	
-	
-	
-	//Commandes de test
-	/*if(msg === prefix+'PING'){
-		console.log('['+sender+'] executed ping command');
-		message.channel.send('Message bien reçu !\n Le test est réussi '+sender+' !')
+
+	/* if(!msg.startsWith(guildConf.prefix) && config.quoifeur == 'true') {
+		try {
+			const commande = require('./commands/reponse_auto.js');
+			commande.run(client, message);
+		}
+		catch (e) {
+			console.error(e);
+		}
+
 	}*/
-	
-	if(msg === config.prefix+'INFO'){
-		console.log('['+sender+'] executed info command');
-		message.channel.send('J\'ai été créé par Inposa !\nJe sert surtout à faire des trucs sur Discord !');
+
+	else{
+
+		message.channel.startTyping();
+
+		// Récupération des arguments et de la commande
+		const args = msg.slice(guildConf.prefix.length).trim().split(/\s+/g);
+		const cmd = args.shift().toLowerCase();
+
+		// Exécution de la commande avec le handler
+		try{
+			// Test d'ouverture de fichier.
+			const fichier_commande = require(`./commands/${cmd}.js`);
+			fichier_commande.run(client, message, args);
+		}
+		catch(ex) {
+			console.error(ex.message);
+		}
+		finally {
+			message.channel.stopTyping();
+
+			/* const now = new Date();
+			const annee = now.getFullYear();
+			const mois = (('0' + (now.getMonth() + 1)).slice(-2));
+			const jour = ('0' + now.getDate()).slice(-2);
+			const hr = ('0' + now.getHours()).slice(-2);
+			const min = ('0' + now.getMinutes()).slice(-2);
+			const sec = ('0' + now.getSeconds()).slice(-2);
+
+			const strDate = `[${annee}/${mois}/${jour}|${hr}:${min}:${sec}]`; */
+			// console.log()
+			console.log(`[${message.guild.name}] ${message.author.tag} a exécuté la commande ${guildConf.prefix}${cmd} ${args}`);
+		}
 	}
 });
 
 // Loger le bot avec son token d'autentification qui lui est propre
-client.login(config.token);
+client.login(process.env.BOT_TOKEN);

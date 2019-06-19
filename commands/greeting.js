@@ -1,16 +1,16 @@
-exports.run = (client, message, args, tools)=>{
-	if(args[0]==undefined){
+exports.run = (client, message, args)=>{
+	if(args[0] == undefined) {
 		message.channel.send(`Bonjour ${message.author} !`);
 	}
 	else{
 		try{
-			let usr = message.mentions.users.first();
-			
+			const usr = message.mentions.users.first();
+
 			message.channel.send(`Bonjour ${usr} !`);
 		}
-		catch(ex){
+		catch(ex) {
 			console.log(ex);
-			message.channel.send("Merci de bien vouloir spécifier quelque chose qui ai du **SENS** pour moi !");
+			message.channel.send('Merci de bien vouloir spécifier quelque chose qui ai du **SENS** pour moi !');
 		}
 	}
-}
+};
