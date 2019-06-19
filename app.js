@@ -20,8 +20,8 @@ const defaultSettings = {
 	// modLogChannel: 'mod-log',
 	// modRole: 'Moderator',
 	// adminRole: 'Administrator',
-	// welcomeChannel: 'welcome',
-	welcomeMessage: 'Booooooonjour !',
+	welcomeChannel: 'bienvenue',
+	welcomeMessage: 'Booooooonjour {{user}} !',
 };
 
 /* //Tentative de loading des commandes
@@ -43,9 +43,11 @@ client.on('guildMemberAdd', (member)=>{
 
 	client.settings.ensure(member.guild.id, defaultSettings);
 
-	const messageBienvenue = client.settings.get(member.guild.id, 'welcomeMessage');
-	const channel = guild.channels.find(ch => ch.name === config.join_channel);
+	let messageBienvenue = client.settings.get(member.guild.id, 'welcomeMessage');
+	const channel = guild.channels.find(ch => ch.name === client.settings.get(member.guild.id, 'welcomeChannel'));
 
+	messageBienvenue = messageBienvenue.replace('{{user}}', member.displayName);
+	messageBienvenue = messageBienvenue.replace('{{guild}}', member.guild.name);
 	channel.send(messageBienvenue);
 /*
 	const usr = member.user;

@@ -13,6 +13,10 @@ exports.run = (client, message, args)=>{
 	else{
 		const [param, ...values] = args;
 
+		/* if(values.join(' ') === '{{default}}') {
+			client.settings.set(message.guild.id, defaultSettings, param);
+		} */
+
 		if(!client.settings.has(message.guild.id, param)) {
 			message.channel.send('Merci de bien vouloir préciser un paramètre **valide** à modifier.');
 			return;
