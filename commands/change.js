@@ -1,9 +1,11 @@
 exports.run = (client, message, args)=>{
-	if(!message.guild.fetchMember(message.author).hasPermission('ADMINISTRATOR')) {
-		message.channel.send('**AH AH**, vous n\'êtes pas administrateur !');
-		return;
-	}
-	else if(args[0] == undefined) {
+	message.guild.fetchMember(message.author).then(member => {
+		if(!member.hasPermission('ADMINISTRATOR')) {
+			message.channel.send('Navré, vous n\'êtes pas administrateur...');
+		}
+	});
+
+	if(args[0] == undefined) {
 		message.channel.send('Merci de bien vouloir préciser un paramètre !');
 		return;
 	}
@@ -18,9 +20,8 @@ exports.run = (client, message, args)=>{
 
 		try {
 			client.settings.set(message.guild.id, values.join(' '), param);
+			message.channel.send(`${param} a été modifié et possède maintenant la valeur ${values.join(' ')} !`);
 		}
-
-		// let usr = message.mentions.users.first();
 
 		catch(ex) {
 			console.log(ex);
