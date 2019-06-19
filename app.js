@@ -116,7 +116,7 @@ client.on('message', async (message) => {
 
 			const strDate = `[${annee}/${mois}/${jour}|${hr}:${min}:${sec}]`; */
 
-			console.log(`${message.author.tag} a exécuté la commande ${cmd} ${args}`);
+			console.log(`[${message.guild.name}] ${message.author.tag} a exécuté la commande ${guildConf.prefix}${cmd} ${args}`);
 		}
 	}
 });
