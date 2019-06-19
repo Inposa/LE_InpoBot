@@ -115,7 +115,7 @@ client.on('message', async (message) => {
 			const sec = ('0' + now.getSeconds()).slice(-2);
 
 			const strDate = `[${annee}/${mois}/${jour}|${hr}:${min}:${sec}]`; */
-
+			// console.log()
 			console.log(`[${message.guild.name}] ${message.author.tag} a exécuté la commande ${guildConf.prefix}${cmd} ${args}`);
 		}
 	}
