@@ -89,7 +89,7 @@ client.on('message', async (message) => {
 		message.channel.startTyping();
 
 		// Récupération des arguments et de la commande
-		const args = msg.slice(config.prefix.length).trim().split(/\s+/g);
+		const args = msg.slice(guildConf.prefix.length).trim().split(/\s+/g);
 		const cmd = args.shift().toLowerCase();
 
 		// Exécution de la commande avec le handler
