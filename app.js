@@ -69,7 +69,7 @@ client.on('message', async (message) => {
 	const guildConf = client.settings.ensure(message.guild.id, defaultSettings);
 	const msg = message.content;
 
-	if(msg.indexOg(guildConf.prefix) !== 0) {
+	if(msg.indexOf(guildConf.prefix) !== 0) {
 		return;
 	}
 
