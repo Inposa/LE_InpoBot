@@ -1,6 +1,6 @@
 {
   "name": "inpobot",
-  "version": "0.0.2",
+  "version": "0.1",
   "description": "Un bot pour Inposa ! Un bot qui fait des trucs !",
   "main": "app.js",
   "engines": {
@@ -15,7 +15,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node app.js"
   },
   "repository": {
     "type": "git",
