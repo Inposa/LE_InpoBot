@@ -4,13 +4,8 @@ exports.run = (client, message, args)=>{
 	}
 	else{
 		try{
-			for(const usr of message.mentions.users) {
-				message.channel.send(usr.last.displayAvatarURL);
-
-			}
-
-			// let usr = message.mentions.users.first();
-
+			const usr = message.mentions.users.first();
+			message.channel.send(usr.displayAvatarURL);
 		}
 		catch(ex) {
 			console.log(ex);
