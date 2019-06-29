@@ -1,12 +1,12 @@
 // Importation de la librairie de Discord.js
-const Discord = require('discord.js');
-const Enmap = require('enmap');
-// const fs = require('fs');
-
 const config = require('./config.json');
 
-// Création d'une instance de client Discord
+const Discord = require('discord.js');
 const client = new Discord.Client();
+// const fs = require('fs');
+
+const Enmap = require('enmap');
+// Création d'une instance de client Discord
 
 client.settings = new Enmap({
 	name:'settings',
@@ -20,6 +20,7 @@ const defaultSettings = {
 	// modLogChannel: 'mod-log',
 	// modRole: 'Moderator',
 	// adminRole: 'Administrator',
+	isWelcoming: true,
 	welcomeChannel: 'bienvenue',
 	welcomeMessage: 'Booooooonjour {{user}} !',
 };
@@ -30,6 +31,12 @@ function reloadCommands(){
 
 }*/
 
+// Permet de retirer les config de la guild lorsque le bot est retiré
+// de celle-ci.
+client.on('guildDelete', (guild) => {
+	console.log(`[${guild.name}] Supression des paramètres de serveur, au revoir !`);
+	client.settings.delete(guild.id);
+});
 
 // Listener lorsque le bot est prêt à être utilisé
 // Lorsqu'il est lancé, par exemple
@@ -39,16 +46,23 @@ client.on('ready', () =>{
 });
 
 client.on('guildMemberAdd', (member)=>{
+	client.settings.ensure(member.guild.id, defaultSettings);
+	console.log(client.settings.get(member.guild.id, 'isWelcoming'));
+	// if (client.settings.get(member.guild.id, 'isWelcoming')) {
 	const guild = member.guild;
 
-	client.settings.ensure(member.guild.id, defaultSettings);
-
-	let messageBienvenue = client.settings.get(member.guild.id, 'welcomeMessage');
-	const channel = guild.channels.find(ch => ch.name === client.settings.get(member.guild.id, 'welcomeChannel'));
-
+	let messageBienvenue = client.settings.get(guild.id, 'welcomeMessage');
 	messageBienvenue = messageBienvenue.replace('{{user}}', member.displayName);
-	messageBienvenue = messageBienvenue.replace('{{guild}}', member.guild.name);
-	channel.send(messageBienvenue);
+	messageBienvenue = messageBienvenue.replace('{{@user}}', member.user);
+
+	messageBienvenue = messageBienvenue.replace('{{guild}}', guild.name);
+
+	guild.channels
+		.find(ch => ch.name === client.settings.get(guild.id, 'welcomeChannel'))
+		.send(messageBienvenue)
+		.catch(console.error);
+
+	// }
 /*
 	const usr = member.user;
 
@@ -69,6 +83,7 @@ client.on('message', async (message) => {
 	if (!message.guild || message.author.bot) {return;}
 
 	const guildConf = client.settings.ensure(message.guild.id, defaultSettings);
+	console.log(guildConf.isWelcoming);
 	const msg = message.content;
 
 	if(msg.indexOf(guildConf.prefix) !== 0) {
@@ -115,7 +130,7 @@ client.on('message', async (message) => {
 			const sec = ('0' + now.getSeconds()).slice(-2);
 
 			const strDate = `[${annee}/${mois}/${jour}|${hr}:${min}:${sec}]`; */
-			console.log(`[${message.guild.name}] ${message.author.tag} a exécuté la commande ${guildConf.prefix}${cmd} ${args}`);
+			console.log(`[${message.guild.name}] ${message.author.tag} a exécuté la commande ${guildConf.prefix}${cmd} ${args.join(' ')}`);
 		}
 	}
 });
