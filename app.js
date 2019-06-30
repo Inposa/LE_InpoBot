@@ -19,7 +19,7 @@ const defaultSettings = {
 	prefix: '&',
 	// modLogChannel: 'mod-log',
 	// modRole: 'Moderator',
-	// adminRole: 'Administrator',
+	adminRole: 'Administrateur',
 	isWelcoming: true,
 	welcomeChannel: 'bienvenue',
 	welcomeMessage: 'Booooooonjour {{user}} !',
@@ -48,21 +48,20 @@ client.on('ready', () =>{
 client.on('guildMemberAdd', (member)=>{
 	client.settings.ensure(member.guild.id, defaultSettings);
 	console.log(client.settings.get(member.guild.id, 'isWelcoming'));
-	// if (client.settings.get(member.guild.id, 'isWelcoming')) {
-	const guild = member.guild;
+	if (client.settings.get(member.guild.id, 'isWelcoming')) {
+		const guild = member.guild;
 
-	let messageBienvenue = client.settings.get(guild.id, 'welcomeMessage');
-	messageBienvenue = messageBienvenue.replace('{{user}}', member.displayName);
-	messageBienvenue = messageBienvenue.replace('{{@user}}', member.user);
+		let messageBienvenue = client.settings.get(guild.id, 'welcomeMessage');
+		messageBienvenue = messageBienvenue.replace('{{user}}', member.displayName);
+		messageBienvenue = messageBienvenue.replace('{{@user}}', member.user);
+		messageBienvenue = messageBienvenue.replace('{{guild}}', guild.name);
 
-	messageBienvenue = messageBienvenue.replace('{{guild}}', guild.name);
+		guild.channels
+			.find(ch => ch.name === client.settings.get(guild.id, 'welcomeChannel'))
+			.send(messageBienvenue)
+			.catch(console.error);
 
-	guild.channels
-		.find(ch => ch.name === client.settings.get(guild.id, 'welcomeChannel'))
-		.send(messageBienvenue)
-		.catch(console.error);
-
-	// }
+	}
 /*
 	const usr = member.user;
 
@@ -83,7 +82,6 @@ client.on('message', async (message) => {
 	if (!message.guild || message.author.bot) {return;}
 
 	const guildConf = client.settings.ensure(message.guild.id, defaultSettings);
-	console.log(guildConf.isWelcoming);
 	const msg = message.content;
 
 	if(msg.indexOf(guildConf.prefix) !== 0) {
@@ -113,7 +111,7 @@ client.on('message', async (message) => {
 		try{
 			// Test d'ouverture de fichier.
 			const fichier_commande = require(`./commands/${cmd}.js`);
-			fichier_commande.run(client, message, args);
+			fichier_commande.run(client, message, args, defaultSettings);
 		}
 		catch(ex) {
 			console.error(ex.message);
