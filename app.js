@@ -19,10 +19,12 @@ const defaultSettings = {
 	prefix: '&',
 	// modLogChannel: 'mod-log',
 	// modRole: 'Moderator',
-	// adminRole: 'Administrator',
+	adminRole: 'Administrateur',
 	isWelcoming: true,
 	welcomeChannel: 'bienvenue',
 	welcomeMessage: 'Booooooonjour {{user}} !',
+	startRole:false,
+	welcomeRole: 0,
 };
 
 /* //Tentative de loading des commandes
@@ -42,27 +44,30 @@ client.on('guildDelete', (guild) => {
 // Lorsqu'il est lancé, par exemple
 client.on('ready', () =>{
 	client.user.setActivity(config.activity, { type:'PLAYING' });
-	console.log('-- LE BOT EST PRÊT À FONCTIONNER --');
+	console.log('-- Le bot est prêt à fonctionner ! --');
 });
 
+// Event de join du serveur
 client.on('guildMemberAdd', (member)=>{
-	client.settings.ensure(member.guild.id, defaultSettings);
+	const guildconf = client.settings.ensure(member.guild.id, defaultSettings);
 	console.log(client.settings.get(member.guild.id, 'isWelcoming'));
-	// if (client.settings.get(member.guild.id, 'isWelcoming')) {
-	const guild = member.guild;
 
-	let messageBienvenue = client.settings.get(guild.id, 'welcomeMessage');
-	messageBienvenue = messageBienvenue.replace('{{user}}', member.displayName);
-	messageBienvenue = messageBienvenue.replace('{{@user}}', member.user);
+	// Permet d'activer ou désactiver le message de bienvenue
+	if (guildconf.isWelcoming) {
+		const guild = member.guild;
 
-	messageBienvenue = messageBienvenue.replace('{{guild}}', guild.name);
+		let messageBienvenue = guildconf.welcomeMessage;
 
-	guild.channels
-		.find(ch => ch.name === client.settings.get(guild.id, 'welcomeChannel'))
-		.send(messageBienvenue)
-		.catch(console.error);
+		messageBienvenue = messageBienvenue.replace('{{user}}', member.displayName);
+		messageBienvenue = messageBienvenue.replace('{{@user}}', member.user);
+		messageBienvenue = messageBienvenue.replace('{{guild}}', guild.name);
 
-	// }
+		guild.channels
+			.find(ch => ch.name === client.settings.get(guild.id, 'welcomeChannel'))
+			.send(messageBienvenue)
+			.catch(console.error);
+
+	}
 /*
 	const usr = member.user;
 
@@ -83,7 +88,6 @@ client.on('message', async (message) => {
 	if (!message.guild || message.author.bot) {return;}
 
 	const guildConf = client.settings.ensure(message.guild.id, defaultSettings);
-	console.log(guildConf.isWelcoming);
 	const msg = message.content;
 
 	if(msg.indexOf(guildConf.prefix) !== 0) {
@@ -113,7 +117,7 @@ client.on('message', async (message) => {
 		try{
 			// Test d'ouverture de fichier.
 			const fichier_commande = require(`./commands/${cmd}.js`);
-			fichier_commande.run(client, message, args);
+			fichier_commande.run(client, message, args, defaultSettings);
 		}
 		catch(ex) {
 			console.error(ex.message);
