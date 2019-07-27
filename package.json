@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "better-sqlite-pool": "^0.2.2",
+    "better-sqlite3": "^5.4.1",
     "discord.js": "^11.5.1",
-    "enmap": "^5.0.0",
+    "enmap": "^5.0.1",
+    "node-gyp": "^5.0.3",
     "request": "^2.88.0"
   },
   "devDependencies": {},

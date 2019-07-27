@@ -17,7 +17,7 @@ client.settings = new Enmap({
 
 const defaultSettings = {
 	prefix: '&',
-	// modLogChannel: 'mod-log',
+	// LogChannel: 'mod-log',
 	// modRole: 'Moderator',
 	adminRole: 'Administrateur',
 	isWelcoming: true,
@@ -48,7 +48,7 @@ client.on('ready', () =>{
 });
 
 // Event de join du serveur
-client.on('guildMemberAdd', (member)=>{
+client.on('guildMemberAdd', async (member)=>{
 	const guildconf = client.settings.ensure(member.guild.id, defaultSettings);
 	console.log(client.settings.get(member.guild.id, 'isWelcoming'));
 
@@ -58,9 +58,9 @@ client.on('guildMemberAdd', (member)=>{
 
 		let messageBienvenue = guildconf.welcomeMessage;
 
-		messageBienvenue = messageBienvenue.replace('{{user}}', member.displayName);
-		messageBienvenue = messageBienvenue.replace('{{@user}}', member.user);
-		messageBienvenue = messageBienvenue.replace('{{guild}}', guild.name);
+		messageBienvenue = messageBienvenue.replace('{{user}}', member.displayName)
+			.replace('{{@user}}', member.user)
+			.replace('{{guild}}', guild.name);
 
 		guild.channels
 			.find(ch => ch.name === client.settings.get(guild.id, 'welcomeChannel'))
@@ -68,31 +68,28 @@ client.on('guildMemberAdd', (member)=>{
 			.catch(console.error);
 
 	}
-/*
-	const usr = member.user;
-
-	try {
-		const channel = guild.channels.find(ch => ch.name === config.join_channel);
-		channel.send(`Hello there ${usr} !`);
-		member.addRole('585102354479579136');
-	}
-	catch (e) {
-		console.error(`Le channel ${config.join_channel} ne semble pas exister...`);
-	}*/
 });
 
 
 // Listener lorsqu'un message est envoyé dans le chat
 // message est le message en lui même qu'on récupère en même temps qu'on l'écoute
 client.on('message', async (message) => {
-	if (!message.guild || message.author.bot) {return;}
+	if (!message.guild || message.author.bot) {
+		return;
+	}
 
 	const guildConf = client.settings.ensure(message.guild.id, defaultSettings);
 	const msg = message.content;
 
-	if(msg.indexOf(guildConf.prefix) !== 0) {
+	// À modifier
+	if(!msg.startsWith(guildConf.prefix)){
 		return;
 	}
+	/*
+	if(msg.indexOf(guildConf.prefix) !== 0) {
+		return;
+	} 
+	*/
 
 	/* if(!msg.startsWith(guildConf.prefix) && config.quoifeur == 'true') {
 		try {
@@ -113,6 +110,13 @@ client.on('message', async (message) => {
 		const args = msg.slice(guildConf.prefix.length).trim().split(/\s+/g);
 		const cmd = args.shift().toLowerCase();
 
+		// Si on tente d'entrer une commande "vieille" et que la personne en question n'est pas
+		// la merveilleuse personne qui développe ce bot, on skip.
+		if(cmd.startsWith('_') && message.author.id != '100707970203004928') {
+			console.log([`${message.guild.name}] ${message.author.tag} a tenté d'exécuter ${guildConf.prefix}${cmd} ${args.join(' ')}`
+			return;
+		}
+		
 		// Exécution de la commande avec le handler
 		try{
 			// Test d'ouverture de fichier.
@@ -125,7 +129,9 @@ client.on('message', async (message) => {
 		finally {
 			message.channel.stopTyping();
 
-			/* const now = new Date();
+			/* Constitution de la date, à voir si ça sert à quelque chose de le garder.
+			
+			const now = new Date();
 			const annee = now.getFullYear();
 			const mois = (('0' + (now.getMonth() + 1)).slice(-2));
 			const jour = ('0' + now.getDate()).slice(-2);
@@ -134,6 +140,7 @@ client.on('message', async (message) => {
 			const sec = ('0' + now.getSeconds()).slice(-2);
 
 			const strDate = `[${annee}/${mois}/${jour}|${hr}:${min}:${sec}]`; */
+			
 			console.log(`[${message.guild.name}] ${message.author.tag} a exécuté la commande ${guildConf.prefix}${cmd} ${args.join(' ')}`);
 		}
 	}
